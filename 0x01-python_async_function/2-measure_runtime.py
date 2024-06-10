@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
-"""Module that measures elapsed time from async functions"""
+"""Module that measures the total runtime of async coroutine functions"""
 import asyncio
 import time
 
-wait_n = __import__('1-concurrent_coroutines').wait_n
+async_comprehension = __import__('1-async_comprehension').async_comprehension
 
 
-def measure_time(n: int, max_delay: int) -> float:
-    """Function that measures appropriate elapsed time"""
+async def measure_runtime() -> float:
+    """Function that measures total runtime of async functions"""
+
+    tasks = []
 
     start = time.time()
-    asyncio.run(wait_n(n, max_delay))
+    for num in range(4):
+        tasks.append(asyncio.create_task(async_comprehension()))
+
+    await asyncio.gather(*tasks)
+
     end = time.time()
-    elapsed = end - start
-    return elapsed / n
+    return end - start
