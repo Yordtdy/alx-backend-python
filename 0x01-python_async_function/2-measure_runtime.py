@@ -1,24 +1,16 @@
-
 #!/usr/bin/env python3
-"""
-Runtime for parallel comprehensions
-Write coroutine measure_runtime to execute async_comprehension
-measure_runtime to measure total runtime and return it
-"""
+'''This script contains 2's module.
+'''
 import asyncio
 import time
 
-async_comprehension = __import__('1-async_comprehension').async_comprehension
+
+wait_n = __import__('1-concurrent_coroutines').wait_n
 
 
-async def measure_runtime() -> float:
-    """
-    Coroutine measure_runtime
-    measure execute runtime
-    """
-    begin = time.perf_counter()
-    await asyncio.gather(async_comprehension(), async_comprehension(),
-                         async_comprehension(), async_comprehension())
-    stop = time.perf_counter()
-    return stop - begin
-
+def measure_time(n: int, max_delay: int) -> float:
+    '''Computes the average runtime of wait_n.
+    '''
+    start_time = time.time()
+    asyncio.run(wait_n(n, max_delay))
+    return (time.time() - start_time) / n
